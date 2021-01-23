@@ -34,7 +34,12 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { MidiDeviceWithConditionInterface, ToggleInputDeviceUsageParams, ToggleOutputDeviceUsageParams} from '../store/midi/types';
+import { 
+  MidiInputWithCondition, 
+  MidiOutputWithCondition, 
+  ToggleInputDeviceUsageParams, 
+  ToggleOutputDeviceUsageParams
+} from '../store/midi/types';
 
 const MidiModule = namespace('midi');
 
@@ -43,10 +48,10 @@ export default class MidiDeviceList extends Vue {
     private deviceTab = 'inputs';
 
     @MidiModule.State('inputs')
-    private inputs!: MidiDeviceWithConditionInterface[];
+    private inputs!: MidiInputWithCondition[];
 
     @MidiModule.State('outputs')
-    private outputs!: MidiDeviceWithConditionInterface[];
+    private outputs!: MidiOutputWithCondition[];
 
     @MidiModule.Action('getDevices')
     private getDevices!: () => Promise<void>;

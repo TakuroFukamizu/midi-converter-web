@@ -1,7 +1,7 @@
 import { ActionTree, Commit } from 'vuex';
 import { RootState } from '../types';
 import { MidiState, MidiMessageData, ToggleInputDeviceUsageParams, ToggleOutputDeviceUsageParams } from './types';
-import 'webmidi';
+// import 'webmidi';
 import { v4 as uuidv4 } from 'uuid';
 
 const ids: string[] = [];
@@ -56,18 +56,16 @@ const actions: ActionTree<MidiState, RootState> = {
         if (!event) return;
 
         console.log('onRawInputEvent', event);
-        // const fromDeviceId = event.srcElement.id;
-        const fromDevice = event['srcElement'];
-        const fromDeviceId = (fromDevice['id'] as string) || '';
-        const fromDeviceName = (fromDevice['name'] as string) || 'undefined';
+        const sourceInput = (event.target as WebMidi.MIDIInput);
+
         // TODO: 重くなるようなら、useするときだけイベントを割り当てる
         for (const { device, use } of state.inputs) { // 使用しているデバイスのメッセージのみ拾う
-            if (device.id != fromDeviceId) continue;
+            if (device.id != sourceInput.id) continue;
             if (!use) return; // 使用しない
         }
         const message = {
             id: uuidv4(),
-            from: fromDeviceName,
+            from: sourceInput.name || 'undefined',
             isRemote: false,
             timestamp: event.timeStamp as number,
             data: event.data,

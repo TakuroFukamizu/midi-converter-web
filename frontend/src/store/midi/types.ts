@@ -1,9 +1,13 @@
 import 'webmidi';
 import EventEmitter from 'events';
 
-export interface MidiDeviceWithConditionInterface {
-    kind: 'input' | 'output';
-    device: WebMidi.MIDIInput | WebMidi.MIDIOutput;
+export interface MidiInputWithCondition {
+    device: WebMidi.MIDIInput;
+    use: boolean;
+}
+
+export interface MidiOutputWithCondition {
+    device: WebMidi.MIDIOutput;
     use: boolean;
 }
 
@@ -16,17 +20,17 @@ export interface MidiMessageData {
 }
 
 export interface ToggleInputDeviceUsageParams { 
-    input: MidiDeviceWithConditionInterface;
+    input: MidiInputWithCondition;
     use: boolean;
 }
 export interface ToggleOutputDeviceUsageParams { 
-    output: MidiDeviceWithConditionInterface;
+    output: MidiOutputWithCondition;
     use: boolean;
 }
   
 export interface MidiState {
-    inputs: MidiDeviceWithConditionInterface[];
-    outputs: MidiDeviceWithConditionInterface[];
+    inputs: MidiInputWithCondition[];
+    outputs: MidiOutputWithCondition[];
     eventhub: EventEmitter;
     messages: MidiMessageData[];
     messageSizeLimit: number;

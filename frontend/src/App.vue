@@ -44,7 +44,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import EventEmitter from 'events';
-import 'webmidi';
+// import 'webmidi';
 import { MidiMessageData } from './store/midi/types';
 import { WebRtcMidiMessage } from './store/webrtc/types';
 

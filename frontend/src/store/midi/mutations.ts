@@ -1,5 +1,10 @@
 import { MutationTree } from 'vuex';
-import { MidiState, MidiMessageData, MidiDeviceWithConditionInterface, ToggleInputDeviceUsageParams } from './types';
+import {
+    MidiState,
+    MidiMessageData,
+    MidiInputWithCondition,
+    MidiOutputWithCondition,
+} from './types';
 
 const mutations: MutationTree<MidiState> = {
     addInput: (state, device: any) => { 
@@ -7,14 +12,14 @@ const mutations: MutationTree<MidiState> = {
             kind: 'input',
             device: device,
             use: false
-        } as MidiDeviceWithConditionInterface);
+        } as MidiInputWithCondition);
     },
     addOutput: (state, device: any) => { 
         state.outputs.push({
             kind: 'output',
             device: device,
             use: false
-        } as MidiDeviceWithConditionInterface);
+        } as MidiOutputWithCondition);
     },
     addMessage: (state, message: MidiMessageData) => {
         state.messages.unshift(message);
@@ -22,13 +27,13 @@ const mutations: MutationTree<MidiState> = {
             state.messages = state.messages.slice(0, state.messageSizeLimit);
         }
     },
-    updateInputDevice: (state, value: MidiDeviceWithConditionInterface) => { 
+    updateInputDevice: (state, value: MidiInputWithCondition) => { 
         for (let i = 0; i < state.inputs.length; i++) { 
             if (state.inputs[i].device.id != value.device.id) continue;
             state.inputs[i] = value;
         }
     },
-    updateOutputDevice: (state, value: MidiDeviceWithConditionInterface) => { 
+    updateOutputDevice: (state, value: MidiOutputWithCondition) => { 
         for (let i = 0; i < state.outputs.length; i++) { 
             if (state.outputs[i].device.id != value.device.id) continue;
             state.outputs[i] = value;
