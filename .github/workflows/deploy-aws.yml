@@ -1,4 +1,4 @@
-name: github pages
+name: Deploy to AWS
 
 on:
   push:
@@ -31,8 +31,11 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+      - name: Publish to AWS S3 & CloudFront Cache Clear
+        uses: opspresso/action-s3-sync@v0.2.3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: 'ap-northeast-1'
+          FROM_PATH: './dist'
+          DEST_PATH: ${{ secrets.AWS_S3_BUCKET_PATH }}
