@@ -22,7 +22,7 @@ const actions: ActionTree<WebRtcState, RootState> = {
         });
     },
     makeCall: async ({ state, dispatch }, theirId: string) => { 
-        const dataConnection = state.peer!.connect(theirId);
+        const dataConnection = await state.peer!.connect(theirId);
         dispatch('setupDataConnction', dataConnection);
         return true;
     },

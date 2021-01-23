@@ -45,6 +45,7 @@ export default class RemoteConnect extends Vue {
 
     @WebRtcModule.Action('makeCall')
     private makeCall!: (theirId: string) => Promise<boolean>;
+    // FIXME: try-catchを追加
 
     @WebRtcModule.Action('closeCall')
     private closeCall!: () => void;
