@@ -29,7 +29,11 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - run: yarn install --frozen-lockfile
-      - run: yarn build
+
+      - name: Build app
+        env: 
+          VUE_APP_SKYWAY_API_KEY: ${{ secrets.VUE_APP_SKYWAY_API_KEY }}
+        run: yarn build
 
       - name: Publish to AWS S3 & CloudFront Cache Clear
         uses: opspresso/action-s3-sync@v0.2.3
