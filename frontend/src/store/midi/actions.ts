@@ -1,8 +1,10 @@
 import { ActionTree, Commit } from 'vuex';
 import { RootState } from '../types';
 import { MidiState, MidiMessageData, ToggleInputDeviceUsageParams, ToggleOutputDeviceUsageParams } from './types';
-import { MIDIMessageEvent } from 'webmidi';
+import 'webmidi';
 import { v4 as uuidv4 } from 'uuid';
+
+const ids: string[] = [];
 
 const actions: ActionTree<MidiState, RootState> = {
     getDevices: async ({ state, commit }) => {
@@ -21,7 +23,7 @@ const actions: ActionTree<MidiState, RootState> = {
         const inputIterator = access.inputs.values();
         for (let o = inputIterator.next(); !o.done; o = inputIterator.next()) {
             console.log(o.value);
-            o.value.onmidimessage = (event: MIDIMessageEvent) => state.eventhub.emit('rawMessageInput', event);
+            o.value.onmidimessage = (event: WebMidi.MIDIMessageEvent) => state.eventhub.emit('rawMessageInput', event);
             commit('addInput', o.value);
         }
     
@@ -50,9 +52,14 @@ const actions: ActionTree<MidiState, RootState> = {
         }
         return false;
     },
-    onRawInputEvent: async ({ state, dispatch }, event: MIDIMessageEvent) => { 
-        console.log(event);
-        const fromDeviceId = event.srcElement.id;
+    onRawInputEvent: async ({ state, dispatch }, event: WebMidi.MIDIMessageEvent) => { 
+        if (!event) return;
+
+        console.log('onRawInputEvent', event);
+        // const fromDeviceId = event.srcElement.id;
+        const fromDevice = event['srcElement'];
+        const fromDeviceId = (fromDevice['id'] as string) || '';
+        const fromDeviceName = (fromDevice['name'] as string) || 'undefined';
         // TODO: 重くなるようなら、useするときだけイベントを割り当てる
         for (const { device, use } of state.inputs) { // 使用しているデバイスのメッセージのみ拾う
             if (device.id != fromDeviceId) continue;
@@ -60,7 +67,7 @@ const actions: ActionTree<MidiState, RootState> = {
         }
         const message = {
             id: uuidv4(),
-            from: event.srcElement.name || 'undefined',
+            from: fromDeviceName,
             isRemote: false,
             timestamp: event.timeStamp as number,
             data: event.data,
@@ -70,6 +77,7 @@ const actions: ActionTree<MidiState, RootState> = {
     },
     addMidiData: ({ state, commit }, message: MidiMessageData) => {
         // console.log(message);
+        if (ids.indexOf(message.id) != -1) return; //重複
         // 自分が持っているデバイスに送る
         for (const { device, use } of state.outputs) {
             if (!use) continue;

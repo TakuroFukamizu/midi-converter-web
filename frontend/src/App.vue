@@ -44,7 +44,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
 import EventEmitter from 'events';
-import { MIDIMessageEvent } from 'webmidi';
+import 'webmidi';
 import { MidiMessageData } from './store/midi/types';
 import { WebRtcMidiMessage } from './store/webrtc/types';
 
@@ -72,7 +72,7 @@ export default class App extends Vue {
     private midiEventhub!: EventEmitter;
 
     @MidiModule.Action('onRawInputEvent')
-    private onRawInputEvent!: (message: MIDIMessageEvent) => void;
+    private onRawInputEvent!: (message: WebMidi.MIDIMessageEvent) => void;
 
     @MidiModule.Action('addMidiData')
     private addMidiData!: (data: MidiMessageData) => void;

@@ -3,6 +3,7 @@
     .row
       .col
         q-btn(color="primary" label="Load Devices" icon="cached" @click="getDevices")
+        q-separator
     .row
       .col
         q-tabs.bg-primary.text-white.shadow-2(v-model="deviceTab" align="justify" narrow-indicator)
@@ -33,7 +34,6 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { namespace } from 'vuex-class';
-import { MIDIInput, MIDIOutput, MIDIMessageEvent } from 'webmidi';
 import { MidiDeviceWithConditionInterface, ToggleInputDeviceUsageParams, ToggleOutputDeviceUsageParams} from '../store/midi/types';
 
 const MidiModule = namespace('midi');

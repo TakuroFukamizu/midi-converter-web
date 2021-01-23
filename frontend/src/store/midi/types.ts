@@ -1,9 +1,9 @@
-import { MIDIInput, MIDIOutput, MIDIMessageEvent } from 'webmidi';
+import 'webmidi';
 import EventEmitter from 'events';
 
 export interface MidiDeviceWithConditionInterface {
     kind: 'input' | 'output';
-    device: MIDIInput | MIDIOutput;
+    device: WebMidi.MIDIInput | WebMidi.MIDIOutput;
     use: boolean;
 }
 

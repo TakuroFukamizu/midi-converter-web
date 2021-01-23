@@ -28,7 +28,8 @@ const actions: ActionTree<WebRtcState, RootState> = {
     },
     setupDataConnction: ({ state, commit }, dataConnection: DataConnection) => { 
         dataConnection.on('data', (data: any) => {
-            state.eventhub.emit('midiDataReceived', (data as WebRtcMidiMessage));
+            const payload = (data as WebRtcMidiMessage);
+            state.eventhub.emit('midiDataReceived', payload);
         });
         dataConnection.on("error", (error) => {
             console.error('dataConnection has error. ', error);

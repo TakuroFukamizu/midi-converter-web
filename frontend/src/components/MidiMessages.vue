@@ -4,7 +4,7 @@
             q-item(v-for="msg in messages" :key="msg.id")
                 q-item-section
                     q-item-label {{parseMidiMessage(msg.data)}} ({{msg.data}})
-                    q-item-label(caption) {{msg.timestamp}} {{msg.from}} 
+                    q-item-label(caption) {{msg.id}} {{msg.timestamp}} {{msg.from}} 
 </template>
 
 <script lang="ts">

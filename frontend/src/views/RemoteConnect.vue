@@ -20,7 +20,7 @@
             p.text-h6 Make call
           q-card-section
             q-input(outlined v-model="requestTheirId" label="Their Id")
-            q-btn(color="secondary" icon="link" @click="makeCall(requestTheirId)") Call
+            q-btn(color="secondary" icon="link" @click="makeCall(requestTheirId)" disable="!isConnected") Call
       .col(v-else)
         q-card
           q-card-section
